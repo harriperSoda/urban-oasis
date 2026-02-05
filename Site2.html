@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="description" content="Urban Oasis - A homely garden bar and grill for the whole family.">
+    <title>Urban Oasis | Family Garden & Grill</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=Mulish:wght@400;600;800&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        sage: '#7C9A92',       /* Soft Green */
+                        clay: '#D4A373',       /* Warm Earthy Accent */
+                        cream: '#FFFBF2',      /* Warmer Background */
+                        sand: '#F3EFE0',       /* Section Contrast */
+                        charcoal: '#3D3D3D',   /* Softer Black */
+                        'sage-dark': '#5A756E'
+                    },
+                    fontFamily: {
+                        serif: ['Lora', 'serif'],
+                        sans: ['Mulish', 'sans-serif']
+                    },
+                    borderRadius: {
+                        'xl': '1rem',
+                        '2xl': '1.5rem',
+                        '3xl': '2rem',
+                    },
+                    animation: {
+                        'fade-in-up': 'fadeInUp 0.8s ease-out forwards',
+                    },
+                    keyframes: {
+                        fadeInUp: {
+                            '0%': { opacity: '0', transform: 'translateY(20px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* --- CORE SCROLL & LAYOUT FIXES --- */
+        html { 
+            -webkit-overflow-scrolling: touch; 
+            scroll-padding-top: 100px; /* ANALYTICAL FIX: Ensures content stops below the fixed header */
+        }
+        
+        body { 
+            background-color: #FFFBF2; 
+            color: #3D3D3D; 
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            overflow-x: hidden; /* Prevents horizontal scroll */
+            width: 100%;
+        }
+
+        /* Helper to lock scroll when mobile menu is open */
+        body.menu-open {
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        /* Responsive Parallax Fix for iOS */
+        .parallax { 
+            background-attachment: fixed; 
+            background-position: center; 
+            background-repeat: no-repeat; 
+            background-size: cover; 
+        }
+        
+        /* Disable fixed background on mobile to prevent jitter/repaint issues */
+        @media (hover: none), (pointer: coarse) {
+            .parallax { background-attachment: scroll; }
+        }
+
+        /* Menu Design Elements */
+        .menu-item-line { 
+            border-bottom: 2px dotted #D4A373; 
+            opacity: 0.5; 
+            flex-grow: 1; 
+            margin: 0 15px; 
+            position: relative; 
+            top: -5px; 
+        }
+        
+        /* Mobile Menu Transition */
+        #mobileMenu { transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        
+        /* Safe Area Padding */
+        .safe-area-pb { padding-bottom: calc(1rem + env(safe-area-inset-bottom)); }
+        
+        /* Grid Fixes for Mobile - Prevents horizontal scroll */
+        .rituals-grid, .menu-grid {
+             display: grid;
+             /* Using 260px ensures it fits on small phones like iPhone SE (320px width) */
+             grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+             gap: 20px;
+        }
+
+        /* Force single column on very small devices */
+        @media (max-width: 600px) {
+            .rituals-grid, .menu-grid, .grid-cols-3 {
+                grid-template-columns: 1fr !important;
+            }
+        }
+    </style>
+</head>
+<body class="antialiased pt-20">
+
+    <div class="fixed bottom-0 left-0 w-full bg-sage-dark text-white p-4 z-50 md:hidden flex justify-between items-center shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] rounded-t-2xl safe-area-pb transition-transform duration-300 hover:-translate-y-1">
+        <div>
+            <p class="text-xs text-clay font-bold uppercase tracking-wider">Book a table</p>
+            <p class="font-serif italic text-sm">Bring the family</p>
+        </div>
+        <a href="tel:+27115550199" class="bg-clay text-white px-6 py-2 rounded-full font-bold text-xs shadow-md transition hover:bg-white hover:text-clay active:scale-95">Call Now</a>
+    </div>
+
+    <nav id="navbar" class="fixed top-0 left-0 w-full z-50 bg-cream/95 backdrop-blur-sm border-b border-gray-200 shadow-sm transition-all duration-300">
+        <div class="container mx-auto px-6 h-20 flex justify-between items-center">
+            <a href="#" class="text-sage-dark font-serif text-2xl font-bold tracking-tight flex items-center gap-2 hover:text-clay transition duration-300 cursor-pointer">
+                <i class="fas fa-leaf text-clay"></i> Urban Oasis
+            </a>
+            
+            <div class="hidden md:flex space-x-8 font-sans text-sm font-bold text-charcoal items-center">
+                <a href="#about" class="hover:text-clay transition py-2">Our Story</a>
+                <a href="#rituals" class="hover:text-clay transition py-2">Weekly Fun</a>
+                <a href="#specials-section" class="hover:text-clay transition py-2">Specials</a>
+                <a href="#menu" class="hover:text-clay transition py-2">The Kitchen</a>
+                <a href="#contact" class="hover:text-clay transition py-2">Visit Us</a>
+                <a href="#contact" class="ml-4 bg-clay text-white px-6 py-2.5 rounded-md text-sm font-bold shadow-sm hover:bg-sage-dark transition transform hover:-translate-y-0.5">Book a Table</a>
+            </div>
+
+            <button onclick="toggleMenu()" class="md:hidden p-2 text-sage-dark focus:outline-none" aria-label="Open Menu">
+                <i class="fas fa-bars text-2xl"></i>
+            </button>
+        </div>
+    </nav>
+
+    <div id="mobileMenu" class="fixed inset-0 bg-cream z-[60] flex flex-col justify-center items-center translate-x-full">
+        <button onclick="toggleMenu()" class="absolute top-6 right-6 p-4 text-charcoal focus:outline-none" aria-label="Close Menu">
+            <i class="fas fa-times text-3xl hover:text-clay transition"></i>
+        </button>
+        <div class="flex flex-col space-y-6 text-center">
+            <a href="#about" onclick="toggleMenu()" class="font-serif text-2xl text-charcoal hover:text-clay transition">Our Story</a>
+            <a href="#rituals" onclick="toggleMenu()" class="font-serif text-2xl text-charcoal hover:text-clay transition">Weekly Fun</a>
+            <a href="#specials-section" onclick="toggleMenu()" class="font-serif text-2xl text-clay font-bold transition">Specials</a>
+            <a href="#menu" onclick="toggleMenu()" class="font-serif text-2xl text-charcoal hover:text-clay transition">The Kitchen</a>
+            <a href="#contact" onclick="toggleMenu()" class="font-serif text-2xl text-charcoal hover:text-clay transition">Visit Us</a>
+        </div>
+    </div>
+
+    <!-- HERO SECTION WITH LOCAL IMAGE PRESERVED -->
+    <header class="relative min-h-[85vh] h-[85dvh] flex items-center justify-center parallax" style="background-image: url('./site2bg.png');">
+        <div class="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-cream"></div>
+        <div class="relative z-10 text-center px-4 max-w-3xl">
+            <h1 class="font-serif text-5xl md:text-7xl mb-6 leading-tight text-white drop-shadow-lg animate-fade-in-up">
+                Good Food, <br>
+                <span class="italic text-cream/90">Shared Together.</span>
+            </h1>
+            <p class="font-sans text-white/95 text-lg md:text-xl max-w-xl mx-auto mb-10 leading-relaxed font-medium drop-shadow-md animate-fade-in-up">
+                From sunny Sunday roasts to Bingo Tuesdays. A homely sanctuary where the food is hearty and the vibe is always warm.
+            </p>
+            <div class="flex flex-col md:flex-row gap-4 justify-center animate-fade-in-up">
+                <a href="#menu" class="bg-clay text-white px-8 py-4 rounded-full font-sans font-bold text-sm shadow-lg hover:bg-white hover:text-clay hover:-translate-y-1 transition duration-300">See Menu</a>
+                <a href="#rituals" class="bg-white/90 backdrop-blur text-sage-dark px-8 py-4 rounded-full font-sans font-bold text-sm shadow-lg hover:bg-sage hover:text-white hover:-translate-y-1 transition duration-300">What's On This Week?</a>
+            </div>
+        </div>
+    </header>
+
+    <section id="rituals" class="py-24 bg-cream relative">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h3 class="text-sage font-sans font-bold uppercase tracking-widest text-sm mb-3">Something for everyone</h3>
+                <h2 class="font-serif text-4xl text-charcoal">Weekly Family Rituals</h2>
+                <div class="w-20 h-1 bg-clay mx-auto mt-6 rounded-full"></div>
+            </div>
+
+            <div class="rituals-grid" id="rituals-grid">
+                <div class="bg-white p-8 rounded-3xl shadow-sm border-2 border-transparent hover:border-clay/30 transition duration-300 group hover:-translate-y-2 hover:shadow-md">
+                    <div class="flex justify-between items-start mb-4">
+                        <span class="bg-sage/10 text-sage-dark px-3 py-1 rounded-full text-xs font-bold uppercase">Tuesday</span>
+                        <i class="fas fa-microphone-alt text-2xl text-clay group-hover:scale-110 transition"></i>
+                    </div>
+                    <h3 class="font-serif text-2xl font-bold text-charcoal mb-2">Bingo Karaoke</h3>
+                    <p class="text-gray-600 font-sans text-sm leading-relaxed">Sing your heart out and win fun prizes.</p>
+                </div>
+                <div class="bg-white p-8 rounded-3xl shadow-sm border-2 border-transparent hover:border-clay/30 transition duration-300 group hover:-translate-y-2 hover:shadow-md">
+                    <div class="flex justify-between items-start mb-4">
+                        <span class="bg-sage/10 text-sage-dark px-3 py-1 rounded-full text-xs font-bold uppercase">Wednesday</span>
+                        <i class="fas fa-drumstick-bite text-2xl text-clay group-hover:scale-110 transition"></i>
+                    </div>
+                    <h3 class="font-serif text-2xl font-bold text-charcoal mb-2">Wine & Wings</h3>
+                    <p class="text-gray-600 font-sans text-sm leading-relaxed">The perfect mid-week break. 1kg Wings to share.</p>
+                </div>
+                <div class="bg-white p-8 rounded-3xl shadow-sm border-2 border-transparent hover:border-clay/30 transition duration-300 group hover:-translate-y-2 hover:shadow-md">
+                    <div class="flex justify-between items-start mb-4">
+                        <span class="bg-sage/10 text-sage-dark px-3 py-1 rounded-full text-xs font-bold uppercase">Thursday</span>
+                        <i class="fas fa-brain text-2xl text-clay group-hover:scale-110 transition"></i>
+                    </div>
+                    <h3 class="font-serif text-2xl font-bold text-charcoal mb-2">Quiz Night</h3>
+                    <p class="text-gray-600 font-sans text-sm leading-relaxed">Gather the smart ones in the family.</p>
+                </div>
+                <div class="bg-white p-8 rounded-3xl shadow-sm border-2 border-transparent hover:border-clay/30 transition duration-300 group hover:-translate-y-2 hover:shadow-md">
+                    <div class="flex justify-between items-start mb-4">
+                        <span class="bg-sage/10 text-sage-dark px-3 py-1 rounded-full text-xs font-bold uppercase">Friday</span>
+                        <i class="fas fa-glass-cheers text-2xl text-clay group-hover:scale-110 transition"></i>
+                    </div>
+                    <h3 class="font-serif text-2xl font-bold text-charcoal mb-2">Garden Social</h3>
+                    <p class="text-gray-600 font-sans text-sm leading-relaxed">Casual dining and drinks until late.</p>
+                </div>
+                <div class="bg-white p-8 rounded-3xl shadow-sm border-2 border-transparent hover:border-clay/30 transition duration-300 group hover:-translate-y-2 hover:shadow-md">
+                    <div class="flex justify-between items-start mb-4">
+                        <span class="bg-sage/10 text-sage-dark px-3 py-1 rounded-full text-xs font-bold uppercase">Saturday</span>
+                        <i class="fas fa-music text-2xl text-clay group-hover:scale-110 transition"></i>
+                    </div>
+                    <h3 class="font-serif text-2xl font-bold text-charcoal mb-2">Live Grooves</h3>
+                    <p class="text-gray-600 font-sans text-sm leading-relaxed">Acoustic sets in the garden from 1pm.</p>
+                </div>
+                <div class="bg-clay/10 p-8 rounded-3xl shadow-sm border-2 border-clay group relative hover:-translate-y-2 hover:shadow-lg transition duration-300">
+                    <div class="absolute -right-4 -top-4 bg-clay text-white px-6 py-2 rotate-12 font-bold text-xs shadow-md">BEST DAY</div>
+                    <div class="flex justify-between items-start mb-4">
+                        <span class="bg-white text-clay px-3 py-1 rounded-full text-xs font-bold uppercase">Sunday</span>
+                        <i class="fas fa-sun text-2xl text-clay group-hover:scale-110 transition"></i>
+                    </div>
+                    <h3 class="font-serif text-2xl font-bold text-charcoal mb-2">Family Roast</h3>
+                    <p class="text-gray-600 font-sans text-sm leading-relaxed">Kids entertainment and our famous Sunday Roast.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="specials-section" class="py-20 bg-sand">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-12">
+                <h2 class="font-serif text-4xl text-charcoal mb-2">Weekly Highlights</h2>
+                <p class="text-sage-dark italic">Don't miss out on these limited-time favorites</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="col-span-1 md:col-span-2 bg-white rounded-[3rem] overflow-hidden shadow-xl flex flex-col md:flex-row group hover:shadow-2xl transition duration-500 border border-clay/20">
+                    <div class="md:w-1/2 relative h-64 md:h-auto overflow-hidden">
+                        <div class="absolute top-4 left-4 bg-clay text-white px-4 py-1 rounded-full text-xs font-bold uppercase z-10 shadow-md">Sharing</div>
+                        <img src="https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&q=80&w=800" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-700" alt="Ribs">
+                    </div>
+                    <div class="md:w-1/2 p-8 flex flex-col justify-center items-start">
+                        <h3 class="font-serif text-3xl text-charcoal mb-4">The Butcher's Block</h3>
+                        <p class="text-gray-600 mb-6 leading-relaxed font-sans text-sm">
+                            A generous sharing platter featuring 400g sticky Pork Ribs, 200g sliced Sirloin, Buffalo Wings, and crispy onion rings.
+                        </p>
+                        <div class="flex items-center gap-4 w-full justify-between">
+                            <span class="text-2xl font-serif font-bold text-sage-dark">R295</span>
+                            <span class="text-clay text-xs font-bold uppercase border border-clay px-3 py-1 rounded-full group-hover:bg-clay group-hover:text-white transition">Feeds 2-3</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-sage-dark rounded-[3rem] p-8 text-white shadow-xl flex flex-col justify-between relative overflow-hidden group hover:shadow-2xl transition duration-500 hover:-translate-y-2">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -mr-10 -mt-10 blur-2xl group-hover:blur-3xl transition"></div>
+                    <div>
+                        <div class="bg-white/20 inline-block px-4 py-1 rounded-full text-xs font-bold uppercase mb-4 backdrop-blur-sm">Thirsty?</div>
+                        <h3 class="font-serif text-3xl mb-4">Happy Hour Draughts</h3>
+                        <p class="text-white/80 text-sm leading-relaxed mb-6">Join us every Tuesday to Friday between 4pm and 6pm for specials on all local craft beer on tap.</p>
+                    </div>
+                    <div class="flex items-center justify-between mt-auto">
+                        <span class="text-4xl font-serif font-bold text-sand">R35</span>
+                        <i class="fas fa-beer text-4xl text-white/20 group-hover:text-white/40 transition group-hover:rotate-12 duration-500"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="menu" class="py-24 bg-cream">
+        <div class="container mx-auto px-6 max-w-5xl">
+            <div class="text-center mb-12">
+                <i class="fas fa-utensils text-3xl text-clay mb-4 animate-bounce"></i>
+                <h2 class="font-serif text-4xl text-charcoal mb-6">From The Kitchen</h2>
+                
+                <div class="flex flex-wrap justify-center gap-3 font-sans text-sm font-bold text-gray-500">
+                    <button onclick="filterMenu('specials', event)" class="menu-tab bg-sage text-white px-6 py-2 rounded-full shadow-lg border border-sage hover:bg-sage-dark transition focus:outline-none flex items-center">
+                        <i class="fas fa-star mr-2 text-yellow-200"></i>Weekly Specials
+                    </button>
+                    <button onclick="filterMenu('starters', event)" class="menu-tab bg-white px-6 py-2 rounded-full shadow-sm border border-gray-100 hover:text-clay hover:border-clay transition focus:outline-none">Starters</button>
+                    <button onclick="filterMenu('mains', event)" class="menu-tab bg-white px-6 py-2 rounded-full shadow-sm border border-gray-100 hover:text-clay hover:border-clay transition focus:outline-none">The Grill</button>
+                    <button onclick="filterMenu('burgers', event)" class="menu-tab bg-white px-6 py-2 rounded-full shadow-sm border border-gray-100 hover:text-clay hover:border-clay transition focus:outline-none">Burgers</button>
+                    <button onclick="filterMenu('drinks', event)" class="menu-tab bg-white px-6 py-2 rounded-full shadow-sm border border-gray-100 hover:text-clay hover:border-clay transition focus:outline-none">Drinks</button>
+                    <button onclick="filterMenu('bar_specials', event)" class="menu-tab bg-white px-6 py-2 rounded-full shadow-sm border border-gray-100 text-clay border-clay hover:bg-clay hover:text-white transition focus:outline-none">Bar Specials</button>
+                </div>
+            </div>
+
+            <div id="menu-container" class="menu-grid gap-x-16 gap-y-8 bg-white p-8 md:p-12 rounded-[2.5rem] shadow-sm border border-gray-100 min-h-[400px]">
+            </div>
+            
+            <div class="text-center mt-12">
+                 <a href="menu.pdf" download="Urban_Oasis_Menu" class="inline-block border-2 border-sage-dark text-sage-dark px-8 py-3 rounded-full font-sans font-bold text-sm hover:bg-sage-dark hover:text-white transition duration-300 transform hover:-translate-y-1">Download Full Menu (PDF)</a>
+            </div>
+        </div>
+    </section>
+
+    <footer id="contact" class="bg-sage-dark text-white pt-20 pb-10 rounded-t-[3rem] relative z-20">
+        <div class="container mx-auto px-6">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12 text-center md:text-left">
+                <div class="flex flex-col items-center md:items-start">
+                    <div class="font-serif text-3xl font-bold mb-4 flex items-center gap-3">
+                        <i class="fas fa-leaf text-clay"></i> Urban Oasis
+                    </div>
+                    <p class="text-white/80 text-sm leading-relaxed max-w-xs mb-6">
+                        A homely sanctuary for food lovers and families. Good food, fresh air, and weekly memories.
+                    </p>
+                    <div class="flex gap-4">
+                        <a href="#" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-clay transition transform hover:scale-110"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-clay transition transform hover:scale-110"><i class="fab fa-facebook-f"></i></a>
+                    </div>
+                </div>
+                <div class="flex flex-col items-center">
+                    <h4 class="font-sans font-bold text-clay uppercase tracking-widest text-sm mb-6">Come Visit</h4>
+                    <p class="text-white/90 text-sm mb-2">277 Church Street, JHB North</p>
+                    <p class="text-white/90 text-sm mb-4">bookings@oasis.co.za</p>
+                    <a href="tel:+27115550199" class="text-xl font-serif font-bold hover:text-clay transition">+27 11 555 0199</a>
+                </div>
+                <div class="flex flex-col items-center md:items-end">
+                    <h4 class="font-sans font-bold text-clay uppercase tracking-widest text-sm mb-6">Open Doors</h4>
+                    <div class="text-right space-y-2 text-sm text-white/90">
+                        <div class="flex justify-between w-48 md:w-auto gap-4"><span>Mon-Thu:</span> <span>11:00 - 22:00</span></div>
+                        <div class="flex justify-between w-48 md:w-auto gap-4"><span>Fri-Sat:</span> <span>11:00 - 02:00</span></div>
+                        <div class="flex justify-between w-48 md:w-auto gap-4 text-clay font-bold"><span>Sun:</span> <span>11:00 - 20:00</span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="mb-10 px-4 md:px-0">
+                <div class="rounded-3xl overflow-hidden shadow-lg border-4 border-white/10">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3584.664684523!2d27.9!3d-26.0!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjbCsDAwJzAwLjAiUyAyN8KwNTQnMDAuMCJF!5e0!3m2!1sen!2sza!4v1600000000000!5m2!1sen!2sza" 
+                    class="w-full h-56 grayscale hover:grayscale-0 transition duration-700" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                </div>
+            </div>
+            <div class="border-t border-white/10 pt-10 text-center">
+                <p class="text-xs text-white/50 font-sans">&copy; 2026 Urban Oasis. Good Vibes. Great Food.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function toggleMenu() {
+            const menu = document.getElementById('mobileMenu');
+            const body = document.body;
+            
+            if (menu.classList.contains('translate-x-full')) {
+                menu.classList.remove('translate-x-full');
+                body.classList.add('menu-open');
+            } else {
+                menu.classList.add('translate-x-full');
+                body.classList.remove('menu-open');
+            }
+        }
+
+        function highlightToday() {
+            const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+            const todayName = days[new Date().getDay()];
+            const ritualCards = document.querySelectorAll('#rituals .group');
+            
+            ritualCards.forEach(card => {
+                const dayLabel = card.querySelector('span');
+                if (dayLabel && dayLabel.textContent.trim() === todayName) {
+                    card.classList.remove('border-transparent');
+                    card.classList.add('border-clay', 'shadow-xl', 'scale-105', 'ring-4', 'ring-clay/10');
+                    
+                    const badge = document.createElement('div');
+                    badge.className = 'absolute -top-4 left-1/2 transform -translate-x-1/2 bg-clay text-white px-4 py-1 rounded-full text-xs font-bold uppercase shadow-lg tracking-widest z-10';
+                    badge.innerHTML = '<i class="fas fa-calendar-day mr-1"></i> Today';
+                    
+                    if (!card.classList.contains('relative')) card.classList.add('relative');
+                    if (card.classList.contains('overflow-hidden')) card.classList.remove('overflow-hidden');
+                    card.appendChild(badge);
+                    
+                    dayLabel.classList.remove('bg-sage/10', 'text-sage-dark');
+                    dayLabel.classList.add('bg-clay', 'text-white', 'shadow-md');
+                }
+            });
+        }
+
+        const menuData = {
+            specials: [
+                { name: "Tuesday Smash Deal", desc: "Two Urban Legend burgers + Rustic Chips + Onion Rings.", price: "R135" },
+                { name: "Wing-man Wednesday", desc: "1KG Buffalo Wings (BBQ or Peri-Peri) + 2 Coronas.", price: "R165" },
+                { name: "Sunday Roast Platter", desc: "Roast Beef, Yorkshire pudding, roast potatoes, seasonal veg & gravy.", price: "R185" },
+                { name: "Date Night Duo", desc: "2x 200g Sirloin Steaks + Bottle of House Wine.", price: "R380" },
+                { name: "Family Pizza Feast", desc: "3x Large Pizzas (Margherita, Pepperoni, Hawaiian) + 2L Soda.", price: "R320" }
+            ],
+            bar_specials: [
+                { name: "Happy Hour Draughts", desc: "Available Tue-Fri (4pm - 6pm). Local craft beer.", price: "R35" },
+                { name: "Bucket of Coronas", desc: "6 Ice Cold Coronas in a bucket of ice.", price: "R190" },
+                { name: "Gin O'Clock", desc: "Double Gin & Tonic special (Sat 1pm - 4pm).", price: "R60" },
+                { name: "Wine Wednesday", desc: "20% Off all bottles of wine (Wednesdays Only).", price: "-20%" }
+            ],
+            starters: [
+                { name: "Jalapeno Poppers", desc: "Cream cheese filled, bacon wrapped, panko crumbed.", price: "R85" },
+                { name: "Crispy Calamari", desc: "Salt & pepper dust, house lemon aioli.", price: "R95" },
+                { name: "Chicken Livers", desc: "Spicy peri-peri cream sauce, toasted ciabatta.", price: "R80" },
+                { name: "Carpaccio", desc: "Venison, parmesan shavings, rocket, truffle oil.", price: "R110" },
+                { name: "Halloumi Fingers", desc: "Grilled or fried, sweet chili dipping sauce.", price: "R75" },
+                { name: "Wings (Starter)", desc: "4 Wings, BBQ or Peri-Peri.", price: "R70" }
+            ],
+            mains: [
+                { name: "200g Fillet", desc: "Aged 28 days, basted or pepper crusted.", price: "R185" },
+                { name: "300g Ribeye", desc: "Marbled and flavorful. Chef's pick.", price: "R210" },
+                { name: "Lamb Chops", desc: "400g loin chops, lemon & rosemary butter.", price: "R240" },
+                { name: "Pork Ribs (600g)", desc: "Sticky, sweet, smoky house basting.", price: "R230" },
+                { name: "Flame Grilled Chicken", desc: "Half chicken, lemon herb or peri-peri.", price: "R160" }
+            ],
+            burgers: [
+                { name: "The Urban Legend", desc: "Double patty, bacon jam, mature cheddar.", price: "R145" },
+                { name: "Truffle Mushroom", desc: "Swiss cheese, wild mushroom sauce, truffle oil.", price: "R135" },
+                { name: "The Spicy One", desc: "Jalapenos, chilli relish, sriracha mayo.", price: "R125" },
+                { name: "Classic Cheese", desc: "Aged cheddar, pickles, house sauce.", price: "R110" },
+                { name: "Chicken Crunch", desc: "Buttermilk fried breast, slaw, ranch dressing.", price: "R115" }
+            ],
+            drinks: [
+                { name: "Garden Gin Spritz", desc: "Inverroche Amber, Elderflower, Cucumber.", price: "R95" },
+                { name: "Oasis Mojito", desc: "Rum, Lime, Mint, Soda, secrets.", price: "R85" },
+                { name: "Castle Lite Draught", desc: "500ml Ice Cold.", price: "R48" },
+                { name: "Stella Artois", desc: "500ml Draught.", price: "R55" },
+                { name: "Sauvignon Blanc", desc: "Sophie Te'blanche (Glass).", price: "R70" },
+                { name: "Merlot", desc: "Durbanville Hills (Glass).", price: "R65" }
+            ]
+        };
+
+        function filterMenu(category, event) {
+            // SCROLL LOGIC for 'specials' category
+            if (category === 'specials') {
+                const specialsSection = document.getElementById('specials-section');
+                if (specialsSection) {
+                    const y = specialsSection.getBoundingClientRect().top + window.scrollY - 100;
+                    window.scrollTo({top: y, behavior: 'smooth'});
+                }
+            }
+
+            const container = document.getElementById('menu-container');
+            const items = menuData[category];
+            
+            document.querySelectorAll('.menu-tab').forEach(btn => {
+                if(btn.textContent.includes("Weekly Specials")) {
+                    btn.classList.remove('bg-sage-dark', 'ring-2', 'ring-sage');
+                    btn.classList.add('bg-sage');
+                } else if(btn.textContent.includes("Bar Specials")) {
+                    btn.classList.remove('bg-clay', 'text-white', 'shadow-md');
+                    btn.classList.add('text-clay', 'border-clay');
+                } else {
+                    btn.classList.remove('bg-clay', 'text-white', 'shadow-md');
+                    btn.classList.add('bg-white', 'text-gray-500');
+                }
+            });
+
+            let target = null;
+            if (event && event.target) {
+                target = event.target.closest('button');
+            } else if (!event) {
+                if (category === 'specials') target = document.querySelector('button[onclick*="specials"]');
+            }
+
+            if (target) {
+                if(category === 'specials') {
+                    target.classList.remove('bg-sage');
+                    target.classList.add('bg-sage-dark', 'ring-2', 'ring-sage');
+                } else {
+                    target.classList.remove('bg-white', 'text-gray-500', 'text-clay', 'border-clay');
+                    target.classList.add('bg-clay', 'text-white', 'shadow-md');
+                }
+            }
+
+            container.style.opacity = '0';
+            setTimeout(() => {
+                let html = '';
+                items.forEach(item => {
+                    html += `
+                        <div class="flex justify-between items-baseline mb-4 group">
+                            <div class="flex-grow">
+                                <div class="flex justify-between items-baseline">
+                                    <h4 class="font-serif font-bold text-lg text-charcoal group-hover:text-clay transition">${item.name}</h4>
+                                    <div class="menu-item-line"></div>
+                                    <span class="font-sans font-bold text-sage-dark text-lg">${item.price}</span>
+                                </div>
+                                <p class="font-sans text-sm text-gray-500 italic mt-1">${item.desc}</p>
+                            </div>
+                        </div>
+                    `;
+                });
+                container.innerHTML = html;
+                container.style.opacity = '1';
+            }, 200);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            filterMenu('specials', null);
+            highlightToday();
+        });
+
+        window.addEventListener('scroll', () => {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('shadow-md', 'py-3', 'bg-white/95');
+                navbar.classList.remove('py-6');
+            } else {
+                navbar.classList.remove('shadow-md', 'py-3', 'bg-white/95');
+                navbar.classList.add('py-6');
+            }
+        });
+    </script>
+</body>
+</html>

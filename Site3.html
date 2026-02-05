@@ -1,0 +1,937 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <meta name="description" content="Urban Oasis - Johannesburg's Premier Garden Bar & Grill.">
+    <title>Urban Oasis | Garden Bar & Grill</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Oswald:wght@300;500;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* --- 1. CORE VARIABLES & RESET --- */
+        :root {
+            --bg-body: #fdfbf7;      /* Cream */
+            --bg-panel: #ffffff;     /* White */
+            --accent-primary: #d4a373; /* Clay/Gold */
+            --accent-hover: #b08d55;
+            --accent-secondary: #7C9A92; /* Sage */
+            --text-main: #333333;    /* Charcoal for light bg */
+            --text-light: #666666;   /* Gray for secondary */
+            --text-inverse: #ffffff; /* White for dark bg areas */
+            
+            --font-head: 'Oswald', sans-serif;
+            --font-body: 'Lato', sans-serif;
+            --transition: cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        html { 
+            scroll-behavior: smooth; 
+            overflow-x: hidden; /* Critical for mobile */
+            width: 100%;
+        }
+        
+        body {
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            font-family: var(--font-body);
+            line-height: 1.6;
+            overflow-x: hidden; /* Double safety */
+            width: 100%;
+            background-image: linear-gradient(rgba(212, 163, 115, 0.03) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(212, 163, 115, 0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+
+        /* --- 2. UTILITY CLASSES --- */
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+        .text-accent { color: var(--accent-primary); }
+        .text-center { text-align: center; }
+        
+        .btn {
+            display: inline-block;
+            padding: 16px 40px;
+            font-family: var(--font-head);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-decoration: none;
+            transition: all 0.4s var(--transition);
+            border: 2px solid transparent;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background-color: var(--accent-primary);
+            color: white;
+            box-shadow: 0 10px 30px rgba(212, 163, 115, 0.3);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--accent-hover);
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(212, 163, 115, 0.4);
+        }
+
+        .btn-outline {
+            border-color: var(--text-inverse);
+            color: var(--text-inverse);
+            background: transparent;
+        }
+
+        .btn-outline:hover {
+            background: var(--text-inverse);
+            color: var(--text-main);
+            transform: translateY(-3px);
+        }
+
+        /* Reveal Animation Utility */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 1s var(--transition);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* --- 3. NAVIGATION --- */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 24px 0;
+            transition: 0.4s ease;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.5), transparent);
+        }
+
+        nav.scrolled {
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(12px);
+            padding: 16px 0;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+        }
+
+        .nav-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: var(--font-head);
+            font-size: 1.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: white; /* Starts white on hero */
+            letter-spacing: -1px;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        /* Change logo/link color on scroll */
+        nav.scrolled .logo { color: var(--text-main); }
+        nav.scrolled .nav-links a { color: var(--text-main); }
+        nav.scrolled .nav-links a:hover { color: var(--accent-primary); }
+        nav.scrolled .mobile-toggle { color: var(--text-main); }
+
+        .nav-links { display: flex; gap: 40px; align-items: center; }
+        
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0.9;
+            transition: 0.3s;
+        }
+
+        .nav-links a:hover { opacity: 1; color: var(--accent-primary); }
+        .nav-cta { padding: 10px 24px; font-size: 0.8rem; border-radius: 0; }
+
+        .mobile-toggle { display: none; color: white; font-size: 1.5rem; cursor: pointer; transition: color 0.3s;}
+
+        /* --- 4. HERO SECTION --- */
+        .hero {
+            height: 100vh;
+            min-height: 100dvh; /* Mobile browser height fix */
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        .hero-bg {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            /* Palm Tree / Tropical Garden Image */
+            background-image: url('https://plus.unsplash.com/premium_photo-1700577888245-9729a4fe6040?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8cGxhbSUyMHRyZWV8ZW58MHwwfDB8fHww'); 
+            background-size: cover;
+            background-position: center;
+            z-index: 1;
+            /* Default fixed for desktop */
+            background-attachment: fixed;
+        }
+
+        /* Mobile Optimization: Turn off fixed background to prevent jitter and zoom issues */
+        @media (hover: none) {
+            .hero-bg { background-attachment: scroll; }
+        }
+
+        .hero-overlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.6) 100%);
+            z-index: 2;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 3;
+            max-width: 900px;
+            padding: 0 20px;
+        }
+
+        .hero h1 {
+            font-family: var(--font-head);
+            font-size: clamp(3rem, 10vw, 5rem); /* Clamped font size */
+            line-height: 1;
+            text-transform: uppercase;
+            margin-bottom: 24px;
+            letter-spacing: -2px;
+            text-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            color: white;
+        }
+
+        .hero p {
+            font-size: clamp(1rem, 4vw, 1.5rem);
+            color: #f0f0f0;
+            font-weight: 400;
+            margin-bottom: 40px;
+            letter-spacing: 1px;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+        }
+
+        .hero-btns { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; }
+
+        /* --- 5. WEEKLY RITUALS (Event Rows) --- */
+        .section { padding: 100px 0; }
+        
+        .section-header { margin-bottom: 60px; max-width: 700px; margin-left: auto; margin-right: auto; text-align: center; }
+
+        .section-title {
+            font-family: var(--font-head);
+            font-size: clamp(2rem, 8vw, 3rem);
+            text-transform: uppercase;
+            margin-bottom: 16px;
+            position: relative;
+            display: inline-block;
+            color: var(--text-main);
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 5px; right: -20px;
+            width: 60px; height: 4px;
+            background: var(--accent-primary);
+        }
+
+        /* New List/Row Layout for Events */
+        .ritual-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .ritual-row {
+            display: flex;
+            align-items: center;
+            background: white;
+            padding: 25px 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.02);
+            transition: all 0.3s ease;
+            border-left: 6px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ritual-row:hover {
+            transform: translateX(10px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            border-left-color: var(--accent-secondary);
+        }
+
+        .ritual-row.active-day {
+            border-left-color: var(--accent-primary);
+            background: #fffcf5;
+            box-shadow: 0 8px 25px rgba(212, 163, 115, 0.2);
+        }
+
+        /* Date/Icon Column */
+        .ritual-meta {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            min-width: 180px;
+            border-right: 1px solid #eee;
+            padding-right: 20px;
+            margin-right: 30px;
+        }
+
+        .ritual-icon {
+            font-size: 1.8rem;
+            color: var(--accent-secondary);
+            width: 40px;
+            text-align: center;
+        }
+        
+        .ritual-row:hover .ritual-icon { color: var(--accent-primary); }
+
+        .ritual-day {
+            font-family: var(--font-head);
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Content Column */
+        .ritual-info { flex: 1; }
+
+        .ritual-title {
+            font-family: var(--font-head);
+            font-size: 1.6rem;
+            color: var(--text-main);
+            margin-bottom: 5px;
+            text-transform: uppercase;
+        }
+
+        .ritual-desc { font-size: 1rem; color: var(--text-light); font-weight: 300; }
+
+        /* Today Badge */
+        .today-badge {
+            position: absolute;
+            top: 50%; right: 20px;
+            transform: translateY(-50%);
+            background: var(--accent-primary);
+            color: white;
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 6px 12px;
+            border-radius: 50px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: none;
+        }
+        .ritual-row.active-day .today-badge { display: block; }
+
+        /* --- 6. WEEKLY SPECIALS --- */
+        .specials-section { background: white; border-top: 1px solid #f0f0f0; border-bottom: 1px solid #f0f0f0; }
+        
+        .specials-grid {
+            display: grid;
+            /* FIXED: Set minmax to 260px to accommodate narrower mobile screens without scrolling */
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 40px;
+        }
+
+        .special-card {
+            background: var(--bg-body);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            transition: 0.3s;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .special-card:hover { transform: translateY(-5px); box-shadow: 0 15px 35px rgba(0,0,0,0.1); }
+
+        .special-image {
+            height: 200px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+        
+        .promo-tag {
+            position: absolute; top: 15px; left: 15px;
+            background: var(--accent-secondary); color: white;
+            padding: 5px 15px; font-weight: 700; text-transform: uppercase; font-size: 0.75rem;
+            border-radius: 4px;
+        }
+
+        .special-content { padding: 25px; flex: 1; display: flex; flex-direction: column; }
+        .special-title { font-family: var(--font-head); font-size: 1.4rem; margin-bottom: 10px; color: var(--text-main); }
+        .special-desc { font-size: 0.9rem; color: var(--text-light); margin-bottom: 15px; flex: 1; }
+        .special-price { font-size: 1.25rem; font-weight: 700; color: var(--accent-primary); }
+
+        /* --- 7. FULL MENU --- */
+        .menu-nav {
+            position: sticky;
+            top: 90px;
+            z-index: 90;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(5px);
+            padding: 15px 0;
+            border-radius: 50px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            margin-bottom: 60px;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .menu-nav-btn {
+            background: transparent;
+            border: 1px solid #ddd;
+            padding: 8px 24px;
+            border-radius: 30px;
+            font-weight: 700;
+            color: var(--text-light);
+            text-decoration: none;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            transition: 0.3s;
+        }
+
+        .menu-nav-btn:hover, .menu-nav-btn.active {
+            background: var(--accent-primary);
+            color: white;
+            border-color: var(--accent-primary);
+        }
+
+        .menu-category-block { scroll-margin-top: 160px; margin-bottom: 60px; }
+        
+        .menu-category-title {
+            font-family: var(--font-head);
+            font-size: 2rem;
+            color: var(--accent-primary);
+            margin-bottom: 30px;
+            text-transform: uppercase;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+            display: inline-block;
+        }
+
+        .menu-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 25px;
+            border-bottom: 1px dashed rgba(0,0,0,0.1);
+            padding-bottom: 15px;
+        }
+
+        .item-info h4 { font-size: 1.1rem; font-weight: 700; margin-bottom: 4px; color: var(--text-main); }
+        .item-desc { font-size: 0.9rem; color: var(--text-light); }
+        .item-price { font-family: var(--font-head); font-size: 1.2rem; font-weight: 700; color: var(--accent-secondary); white-space: nowrap; margin-left: 15px; }
+        
+        /* Grid Fix for Menu items */
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 40px;
+        }
+
+        /* --- 8. FOOTER & MAP --- */
+        .footer-cta {
+            padding: 100px 0;
+            background: url('https://images.unsplash.com/photo-1544025162-d76694265947?q=80&w=2670&auto=format&fit=crop') fixed;
+            background-size: cover;
+            position: relative;
+            text-align: center;
+        }
+        @media (hover: none) { .footer-cta { background-attachment: scroll; } }
+
+        .footer-overlay {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6);
+        }
+
+        .map-section {
+            background: #e0e0e0;
+            height: 400px;
+            position: relative;
+        }
+        
+        .map-frame { width: 100%; height: 100%; border: none; }
+
+        footer {
+            background: #2d3436;
+            padding: 60px 0;
+            color: #ecf0f1;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            margin-bottom: 60px;
+        }
+
+        .footer-col h4 { font-family: var(--font-head); font-size: 1.2rem; color: white; margin-bottom: 24px; text-transform: uppercase; }
+        .footer-col ul { list-style: none; }
+        .footer-col li { margin-bottom: 12px; color: #bdc3c7; display: flex; align-items: center; gap: 10px;}
+        .footer-col i { color: var(--accent-primary); width: 20px; text-align: center;}
+
+        /* --- MOBILE --- */
+        @media (max-width: 900px) {
+            .hero h1 { font-size: 3.5rem; }
+            .nav-links { display: none; } 
+            .mobile-toggle { display: block; }
+            .menu-nav { top: 70px; } 
+            
+            /* Stack Ritual Layout on Mobile */
+            .ritual-row { flex-direction: column; align-items: flex-start; gap: 15px; }
+            .ritual-meta { border-right: none; border-bottom: 1px solid #eee; width: 100%; padding-bottom: 10px; margin-bottom: 10px; margin-right: 0; }
+            .today-badge { top: 20px; right: 20px; transform: none; }
+            
+            /* Force Single Column on Mobile for ALL grids to prevent horizontal scroll */
+            .menu-grid, .specials-grid, .footer-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* Mobile Menu Overlay */
+        .mobile-menu {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
+            background: var(--bg-body);
+            z-index: 2000;
+            flex-direction: column; justify-content: center; align-items: center; gap: 30px;
+            transform: translateX(100%); transition: 0.4s cubic-bezier(0.77, 0, 0.175, 1);
+            display: flex;
+        }
+        .mobile-menu.open { transform: translateX(0); }
+        .mobile-menu a {
+            font-family: var(--font-head); font-size: 2rem; color: var(--text-main); text-decoration: none; font-weight: 700;
+        }
+    </style>
+</head>
+<body>
+
+    <nav id="navbar">
+        <div class="container nav-inner">
+            <a href="#" class="logo">Urban Oasis<span class="text-accent">.</span></a>
+            <div class="mobile-toggle" onclick="toggleMenu()"><i class="fas fa-bars"></i></div>
+            <div class="nav-links">
+                <a href="#about">Story</a>
+                <a href="#rituals">Events</a>
+                <a href="#specials">Specials</a>
+                <a href="#menu">Menu</a>
+                <a href="#contact">Find Us</a>
+                <a href="#" class="btn btn-primary nav-cta">Book Table</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- MOBILE MENU OVERLAY -->
+    <div class="mobile-menu" id="mobileMenu">
+        <div class="mobile-toggle" onclick="toggleMenu()" style="position: absolute; top: 24px; right: 24px; color: var(--text-main);">
+            <i class="fas fa-times"></i>
+        </div>
+        <a href="#about" onclick="toggleMenu()">Our Story</a>
+        <a href="#rituals" onclick="toggleMenu()">Weekly Fun</a>
+        <a href="#specials" onclick="toggleMenu()">Specials</a>
+        <a href="#menu" onclick="toggleMenu()">The Kitchen</a>
+        <a href="#contact" onclick="toggleMenu()">Visit Us</a>
+    </div>
+
+    <header class="hero">
+        <div class="hero-bg"></div>
+        <div class="hero-overlay"></div>
+        <div class="hero-content reveal active">
+            <h1 class="reveal">Good Food,<br><span class="text-accent">Shared Together</span></h1>
+            <p class="reveal">Garden Bar • Family Grill • Live Events</p>
+            <div class="hero-btns reveal">
+                <a href="#menu" class="btn btn-primary">View Full Menu</a>
+                <a href="#rituals" class="btn btn-outline">What's On?</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- WEEKLY RITUALS (ROW LAYOUT) -->
+    <section id="rituals" class="section">
+        <div class="container">
+            <div class="section-header reveal">
+                <h2 class="section-title">Weekly Rituals</h2>
+                <p class="text-center" style="color: var(--text-light);">There's always something happening in the garden.</p>
+            </div>
+
+            <div class="ritual-list">
+                <!-- Monday -->
+                <div class="ritual-row reveal" data-day="Monday">
+                    <div class="today-badge">TODAY</div>
+                    <div class="ritual-meta">
+                        <i class="fas fa-moon ritual-icon"></i>
+                        <span class="ritual-day">Monday</span>
+                    </div>
+                    <div class="ritual-info">
+                        <h3 class="ritual-title">Rest Day</h3>
+                        <p class="ritual-desc">We are closed for team prep and venue recovery.</p>
+                    </div>
+                </div>
+
+                <!-- Tuesday -->
+                <div class="ritual-row reveal" data-day="Tuesday">
+                    <div class="today-badge">TODAY</div>
+                    <div class="ritual-meta">
+                        <i class="fas fa-microphone-alt ritual-icon"></i>
+                        <span class="ritual-day">Tuesday</span>
+                    </div>
+                    <div class="ritual-info">
+                        <h3 class="ritual-title">Bingo Karaoke</h3>
+                        <p class="ritual-desc">Sing your heart out and win prizes. 7pm start.</p>
+                    </div>
+                </div>
+
+                <!-- Wednesday -->
+                <div class="ritual-row reveal" data-day="Wednesday">
+                    <div class="today-badge">TODAY</div>
+                    <div class="ritual-meta">
+                        <i class="fas fa-drumstick-bite ritual-icon"></i>
+                        <span class="ritual-day">Wednesday</span>
+                    </div>
+                    <div class="ritual-info">
+                        <h3 class="ritual-title">Wine & Wings</h3>
+                        <p class="ritual-desc">1kg Wings specials and discounted house wines.</p>
+                    </div>
+                </div>
+
+                <!-- Thursday -->
+                <div class="ritual-row reveal" data-day="Thursday">
+                    <div class="today-badge">TODAY</div>
+                    <div class="ritual-meta">
+                        <i class="fas fa-brain ritual-icon"></i>
+                        <span class="ritual-day">Thursday</span>
+                    </div>
+                    <div class="ritual-info">
+                        <h3 class="ritual-title">Quiz Night</h3>
+                        <p class="ritual-desc">Test your knowledge. Great for groups.</p>
+                    </div>
+                </div>
+
+                <!-- Friday -->
+                <div class="ritual-row reveal" data-day="Friday">
+                    <div class="today-badge">TODAY</div>
+                    <div class="ritual-meta">
+                        <i class="fas fa-glass-cheers ritual-icon"></i>
+                        <span class="ritual-day">Friday</span>
+                    </div>
+                    <div class="ritual-info">
+                        <h3 class="ritual-title">Garden Social</h3>
+                        <p class="ritual-desc">Lights on, music up. Drinks till late.</p>
+                    </div>
+                </div>
+
+                <!-- Saturday -->
+                <div class="ritual-row reveal" data-day="Saturday">
+                    <div class="today-badge">TODAY</div>
+                    <div class="ritual-meta">
+                        <i class="fas fa-music ritual-icon"></i>
+                        <span class="ritual-day">Saturday</span>
+                    </div>
+                    <div class="ritual-info">
+                        <h3 class="ritual-title">Live Grooves</h3>
+                        <p class="ritual-desc">Acoustic sets in the garden from 1pm.</p>
+                    </div>
+                </div>
+
+                <!-- Sunday -->
+                <div class="ritual-row reveal" data-day="Sunday">
+                    <div class="today-badge">TODAY</div>
+                    <div class="ritual-meta">
+                        <i class="fas fa-sun ritual-icon"></i>
+                        <span class="ritual-day">Sunday</span>
+                    </div>
+                    <div class="ritual-info">
+                        <h3 class="ritual-title">Family Roast</h3>
+                        <p class="ritual-desc">Sunday roast & kids entertainment.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- WEEKLY SPECIALS (PROMOS) -->
+    <section id="specials" class="section specials-section">
+        <div class="container">
+            <div class="section-header reveal">
+                <h2 class="section-title">This Week's Highlights</h2>
+                <p class="text-center" style="color: var(--text-light);">Limited time offers you don't want to miss.</p>
+            </div>
+
+            <div class="specials-grid">
+                <div class="special-card reveal">
+                    <div class="special-image" style="background-image: url('https://images.unsplash.com/photo-1544025162-d76694265947?q=80&w=800');">
+                        <div class="promo-tag">Sharing</div>
+                    </div>
+                    <div class="special-content">
+                        <h3 class="special-title">The Butcher's Block</h3>
+                        <p class="special-desc">A massive platter with 400g sticky ribs, 200g sirloin, wings, and onion rings. Feeds 2-3.</p>
+                        <div class="special-price">R295</div>
+                    </div>
+                </div>
+
+                <div class="special-card reveal">
+                    <div class="special-image" style="background-image: url('https://images.unsplash.com/photo-1594212699903-ec8a3eca50f5?q=80&w=800');">
+                        <div class="promo-tag">Tuesday Only</div>
+                    </div>
+                    <div class="special-content">
+                        <h3 class="special-title">Smash Burger Deal</h3>
+                        <p class="special-desc">Get two of our signature Urban Legend smash burgers with rustic fries.</p>
+                        <div class="special-price">R135</div>
+                    </div>
+                </div>
+
+                <div class="special-card reveal">
+                    <div class="special-image" style="background-image: url('https://images.unsplash.com/photo-1551024709-8f23befc6f87?q=80&w=800');">
+                        <div class="promo-tag">Tue-Fri 4-6pm</div>
+                    </div>
+                    <div class="special-content">
+                        <h3 class="special-title">Golden Hour</h3>
+                        <p class="special-desc">Discounted local draughts on tap and house wines by the glass.</p>
+                        <div class="special-price">R35</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FULL MENU -->
+    <section id="menu" class="section">
+        <div class="container">
+            <div class="section-header reveal">
+                <h2 class="section-title">The Kitchen & Bar</h2>
+                <p class="text-center" style="color: var(--text-light);">Fresh ingredients, open flame, cold drinks.</p>
+            </div>
+
+            <!-- Sticky Menu Navigation -->
+            <div class="menu-nav">
+                <a href="#menu-kitchen" class="menu-nav-btn">Kitchen Favorites</a>
+                <a href="#menu-grill" class="menu-nav-btn">From The Grill</a>
+                <a href="#menu-bar" class="menu-nav-btn">The Bar</a>
+            </div>
+
+            <div class="menu-grid">
+                
+                <!-- Kitchen Cat -->
+                <div id="menu-kitchen" class="menu-category-block reveal">
+                    <h3 class="menu-category-title">Kitchen Favorites</h3>
+                    <div class="menu-item">
+                        <div class="item-info">
+                            <h4>The Oasis Smash</h4>
+                            <p class="item-desc">Double beef, triple cheese, pickles.</p>
+                        </div>
+                        <span class="item-price">R135</span>
+                    </div>
+                    <div class="menu-item">
+                        <div class="item-info">
+                            <h4>Hot Honey Pepperoni</h4>
+                            <p class="item-desc">Woodfired base, spicy honey glaze.</p>
+                        </div>
+                        <span class="item-price">R145</span>
+                    </div>
+                    <div class="menu-item">
+                        <div class="item-info">
+                            <h4>Halloumi Fries</h4>
+                            <p class="item-desc">Served with sweet chili dip.</p>
+                        </div>
+                        <span class="item-price">R85</span>
+                    </div>
+                </div>
+
+                <!-- Grill Cat -->
+                <div id="menu-grill" class="menu-category-block reveal">
+                    <h3 class="menu-category-title">From The Grill</h3>
+                    <div class="menu-item">
+                        <div class="item-info">
+                            <h4>Flame Grilled Fillet</h4>
+                            <p class="item-desc">250g A-Grade beef, pepper crust.</p>
+                        </div>
+                        <span class="item-price">R215</span>
+                    </div>
+                    <div class="menu-item">
+                        <div class="item-info">
+                            <h4>Sticky Pork Ribs</h4>
+                            <p class="item-desc">600g, house BBQ baste.</p>
+                        </div>
+                        <span class="item-price">R245</span>
+                    </div>
+                    <div class="menu-item">
+                        <div class="item-info">
+                            <h4>T-Bone Florentine</h4>
+                            <p class="item-desc">500g powerhouse steak.</p>
+                        </div>
+                        <span class="item-price">R260</span>
+                    </div>
+                </div>
+
+                <!-- Bar Cat -->
+                <div id="menu-bar" class="menu-category-block reveal">
+                    <h3 class="menu-category-title">From The Bar</h3>
+                    <div class="menu-item">
+                        <div class="item-info">
+                            <h4>Garden Gin Spritz</h4>
+                            <p class="item-desc">Inverroche & Elderflower tonic.</p>
+                        </div>
+                        <span class="item-price">R95</span>
+                    </div>
+                    <div class="menu-item">
+                        <div class="item-info">
+                            <h4>Hibiscus Margarita</h4>
+                            <p class="item-desc">Tequila & Hibiscus syrup.</p>
+                        </div>
+                        <span class="item-price">R105</span>
+                    </div>
+                    <div class="menu-item">
+                        <div class="item-info">
+                            <h4>Local Draught</h4>
+                            <p class="item-desc">Standard Pour</p>
+                        </div>
+                        <span class="item-price">R55</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER CTA -->
+    <section class="footer-cta">
+        <div class="footer-overlay" style="z-index: 1;"></div>
+        <div class="container" style="position: relative; z-index: 2;">
+            <h2 class="section-title" style="color:white; border-color:white;">The Vibe is unmatched.</h2>
+            <p style="margin-bottom: 40px; font-size: 1.2rem; color: #ddd;">String lights, cold drinks, and the best garden in JHB North.</p>
+            <a href="#contact" class="btn btn-primary">Reserve Your Spot</a>
+        </div>
+    </section>
+
+    <section id="contact" class="map-section">
+        <iframe class="map-frame" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3584.664684523!2d27.9!3d-26.0!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjbCsDAwJzAwLjAiUyAyN8KwNTQnMDAuMCJF!5e0!3m2!1sen!2sza!4v1600000000000!5m2!1sen!2sza" allowfullscreen="" loading="lazy"></iframe>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <div class="logo" style="margin-bottom: 20px;">Urban Oasis<span class="text-accent">.</span></div>
+                    <p style="color: #bdc3c7;">A modern sanctuary for food lovers. Good food, strong drinks, better vibes.</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Visit Us</h4>
+                    <ul>
+                        <li><i class="fas fa-map-pin"></i> 277 Church St, JHB North</li>
+                        <li><i class="fas fa-phone"></i> 072 199 3795</li>
+                        <li><i class="fas fa-envelope"></i> bookings@urbanoasis.co.za</li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Opening Hours</h4>
+                    <ul>
+                        <li><span style="color:white; width: 80px; display:inline-block;">Mon - Thu:</span> 11am - 11pm</li>
+                        <li><span class="text-accent" style="width: 80px; display:inline-block;">Fri - Sat:</span> 11am - 2am</li>
+                        <li><span style="color:white; width: 80px; display:inline-block;">Sun:</span> 12pm - 9pm</li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Follow Us</h4>
+                    <div style="font-size: 1.5rem; display: flex; gap: 20px;">
+                        <a href="https://www.instagram.com/urbanoasisjhb/?hl=en" style="color: #bdc3c7;"><i class="fab fa-instagram"></i></a>
+                        <a href="https://www.facebook.com/urbanoasisjhb/" style="color: #bdc3c7;"><i class="fab fa-facebook"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center" style="font-size: 0.8rem; border-top: 1px solid #444; padding-top: 30px; color: #7f8c8d;">
+                &copy; 2026 Urban Oasis. All Rights Reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Navbar Scroll Effect
+        window.addEventListener('scroll', function() {
+            const navbar = document.querySelector('nav');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Toggle Mobile Menu
+        function toggleMenu() {
+            document.getElementById('mobileMenu').classList.toggle('open');
+        }
+
+        // Scroll Reveal Animation
+        const observerOptions = {
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.reveal').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Highlight Today's Ritual
+        document.addEventListener('DOMContentLoaded', () => {
+            const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+            const today = days[new Date().getDay()];
+            
+            const ritualCards = document.querySelectorAll('.ritual-row');
+            
+            ritualCards.forEach(card => {
+                if(card.getAttribute('data-day') === today) {
+                    card.classList.add('active-day');
+                }
+            });
+        });
+
+        // Menu Nav Active State
+        window.addEventListener('scroll', () => {
+            const sections = document.querySelectorAll('.menu-category-block');
+            const navLinks = document.querySelectorAll('.menu-nav-btn');
+            
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (scrollY >= sectionTop - 180) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href').includes(current)) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

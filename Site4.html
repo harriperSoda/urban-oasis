@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
+    <meta name="description" content="Urban Oasis - Soulful dining by day, electric rhythm by night.">
+    <title>Urban Oasis | The Golden Hour</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;800&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        emerald: '#064e3b',    
+                        forest: '#022c22',     
+                        slate: '#334155',      
+                        copper: '#b87333',     
+                        saffron: '#eab308',    
+                        cream: '#f8fafc',      
+                        charcoal: '#1e293b',   
+                    },
+                    fontFamily: {
+                        serif: ['Playfair Display', 'serif'],
+                        sans: ['Montserrat', 'sans-serif']
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.5s ease-out',
+                        'slide-up': 'slideUp 0.6s ease-out',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' },
+                        },
+                        slideUp: {
+                            '0%': { transform: 'translateY(20px)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* --- CORE RESETS & UTILITIES --- */
+        * { -webkit-tap-highlight-color: transparent; }
+        
+        body {
+            transition: background-color 0.8s ease, color 0.5s ease;
+            overflow-x: hidden;
+            width: 100%;
+        }
+
+        html { 
+            scroll-behavior: smooth; 
+            overflow-x: hidden;
+        }
+        
+        .hero-bg-layer {
+            transition: opacity 1.2s ease-in-out;
+            will-change: opacity;
+        }
+
+        @media (hover: hover) {
+            .hover-lift {
+                transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s ease;
+            }
+            .hover-lift:hover {
+                transform: translateY(-8px);
+                box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+            }
+        }
+
+        .backdrop-blur-md {
+            -webkit-backdrop-filter: blur(12px);
+            backdrop-filter: blur(12px);
+        }
+
+        .safe-pb { padding-bottom: env(safe-area-inset-bottom); }
+
+        .ritual-card.active-day {
+            border-color: #b87333;
+            background-color: #fffbeb;
+            box-shadow: 0 10px 25px -5px rgba(184, 115, 51, 0.2);
+            transform: scale(1.02);
+        }
+
+        /* Hide Scrollbar for Horizontal Scroll */
+        .hide-scroll::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scroll {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body id="body" class="bg-cream text-charcoal font-sans antialiased w-full">
+
+    <!-- NAVIGATION -->
+    <nav id="navbar" class="fixed w-full z-50 transition-all duration-500 bg-white/90 backdrop-blur-md border-b border-gray-100">
+        <div class="container mx-auto px-6 h-20 flex justify-between items-center">
+            <!-- Logo -->
+            <a href="#" class="text-emerald font-serif text-xl md:text-2xl font-bold tracking-wide flex items-center gap-2 shrink-0">
+                <i class="fas fa-leaf text-copper"></i> 
+                <span class="tracking-tighter">URBAN OASIS</span>
+            </a>
+            
+            <!-- Desktop Links -->
+            <div class="hidden md:flex space-x-8 font-sans text-xs font-bold text-slate uppercase tracking-widest items-center">
+                <a href="#roots" class="hover:text-copper transition">Our Roots</a>
+                <a href="#rituals" class="hover:text-copper transition">Weekly Fun</a>
+                <a href="#menu" class="hover:text-copper transition">The Kitchen</a>
+                <a href="#specials-section" class="hover:text-copper transition">Specials</a>
+                <a href="#contact" class="px-6 py-2 border border-emerald text-emerald hover:bg-emerald hover:text-white transition rounded-full">Book Table</a>
+            </div>
+
+            <!-- Mobile Toggle -->
+            <button onclick="toggleMenu()" class="md:hidden text-emerald text-2xl focus:outline-none p-2" aria-label="Open Menu">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- MOBILE MENU -->
+    <div id="mobileMenu" class="fixed inset-0 bg-emerald z-[60] transform translate-x-full transition-transform duration-300 flex flex-col justify-center items-center text-white space-y-8 safe-pb">
+        <button onclick="toggleMenu()" class="absolute top-6 right-6 text-3xl text-saffron p-4" aria-label="Close Menu"><i class="fas fa-times"></i></button>
+        <a href="#roots" onclick="toggleMenu()" class="font-serif text-3xl hover:text-saffron transition">Our Roots</a>
+        <a href="#rituals" onclick="toggleMenu()" class="font-serif text-3xl hover:text-saffron transition">Weekly Fun</a>
+        <a href="#menu" onclick="toggleMenu()" class="font-serif text-3xl hover:text-saffron transition">The Kitchen</a>
+        <a href="#specials-section" onclick="toggleMenu()" class="font-serif text-3xl hover:text-saffron transition">Specials</a>
+        <a href="#contact" onclick="toggleMenu()" class="px-8 py-3 border-2 border-saffron text-saffron rounded-full font-bold uppercase tracking-widest mt-8">Book Table</a>
+    </div>
+
+    <!-- HERO SECTION (Immersive Bottom-Left Layout) -->
+    <header class="relative h-[95vh] w-full overflow-hidden">
+        <!-- Day Layer -->
+        <div id="hero-day" class="hero-bg-layer absolute inset-0 bg-cover bg-center z-10 opacity-100" 
+             style="background-image: url('./daytime.png');">
+        </div>
+        <!-- Night Layer -->
+        <div id="hero-night" class="hero-bg-layer absolute inset-0 bg-cover bg-center z-20 opacity-0" 
+             style="background-image: url('./sunset.png');">
+        </div>
+
+        <!-- Overlay Gradient for Readability -->
+        <div class="absolute inset-0 z-20 bg-gradient-to-t from-black/80 via-transparent to-black/20 pointer-events-none"></div>
+
+        <div class="absolute bottom-0 left-0 w-full z-30 pb-16 md:pb-24 pt-32 px-6">
+            <div class="container mx-auto flex flex-col md:flex-row items-end justify-between gap-8">
+                
+                <!-- Headlines in Glass Card -->
+                <div id="hero-text-container" class="transition-all duration-700 transform backdrop-blur-md bg-white/10 border border-white/20 p-8 rounded-2xl max-w-2xl">
+                    <h1 id="hero-headline" class="font-serif text-4xl md:text-6xl text-white font-bold mb-4 drop-shadow-sm leading-tight">
+                        Your Family's<br><span class="italic text-saffron">Daily Escape.</span>
+                    </h1>
+                    <p id="hero-subhead" class="font-sans text-white/90 text-lg font-medium tracking-wide uppercase mt-2 mb-6">
+                        Soulful dining under the sun
+                    </p>
+                     <div class="flex gap-4">
+                        <a href="#menu" class="bg-saffron text-emerald px-8 py-3 rounded-full font-bold text-sm hover:bg-white transition shadow-lg">View Menu</a>
+                     </div>
+                </div>
+
+                <!-- Vibe Toggle Switch (Bottom Right now) -->
+                <div class="relative inline-block w-64 select-none bg-black/40 rounded-full p-1 border border-white/20 backdrop-blur-md cursor-pointer mb-2" onclick="toggleVibe()">
+                    <div class="flex justify-between items-center text-xs font-bold uppercase tracking-widest text-white px-2 h-10">
+                        <span class="z-10 w-1/2 text-center flex items-center justify-center h-full">Daytime</span>
+                        <span class="z-10 w-1/2 text-center flex items-center justify-center h-full">Nightlife</span>
+                    </div>
+                    <div id="toggle-pill" class="absolute top-1 left-1 bg-saffron h-[calc(100%-8px)] w-[calc(50%-4px)] rounded-full transition-transform duration-500 ease-out shadow-lg flex items-center justify-center">
+                        <i class="fas fa-sun text-emerald text-lg transition-all duration-300" id="toggle-icon"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- WEEKLY RITUALS (Horizontal Scroll Layout) -->
+    <section id="rituals" class="py-20 bg-cream relative overflow-hidden">
+        <div class="container mx-auto px-6 mb-10 flex justify-between items-end">
+            <div>
+                <h3 class="text-emerald font-sans font-bold uppercase tracking-widest text-xs mb-2">Something for everyone</h3>
+                <h2 class="font-serif text-3xl md:text-4xl text-charcoal">Weekly Rituals</h2>
+            </div>
+            <!-- Scroll Indicator hint -->
+            <div class="hidden md:flex gap-2 text-emerald text-xl">
+                <i class="fas fa-arrow-left opacity-50"></i>
+                <i class="fas fa-arrow-right"></i>
+            </div>
+        </div>
+
+        <!-- Horizontal Scroll Container -->
+        <div class="flex overflow-x-auto gap-6 px-6 pb-12 snap-x snap-mandatory hide-scroll">
+            
+            <!-- Monday -->
+            <div class="min-w-[85vw] md:min-w-[350px] snap-center ritual-card bg-white p-8 rounded-2xl shadow-sm border border-gray-100 hover:shadow-lg transition duration-300 group" data-day="Monday">
+                <div class="flex justify-between items-start mb-6">
+                    <span class="bg-emerald/10 text-emerald px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider">Monday</span>
+                    <i class="fas fa-moon text-2xl text-copper opacity-50 group-hover:opacity-100 transition"></i>
+                </div>
+                <h3 class="font-serif text-2xl font-bold text-charcoal mb-2">Rest Day</h3>
+                <p class="text-slate font-sans text-sm leading-relaxed">We are closed for team prep and venue recovery. See you tomorrow!</p>
+            </div>
+
+            <!-- Tuesday -->
+            <div class="min-w-[85vw] md:min-w-[350px] snap-center ritual-card bg-white p-8 rounded-2xl shadow-sm border border-gray-100 hover:shadow-lg transition duration-300 group" data-day="Tuesday">
+                <div class="flex justify-between items-start mb-6">
+                    <span class="bg-emerald/10 text-emerald px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider">Tuesday</span>
+                    <i class="fas fa-microphone-alt text-2xl text-copper opacity-50 group-hover:opacity-100 transition"></i>
+                </div>
+                <h3 class="font-serif text-2xl font-bold text-charcoal mb-2">Bingo Karaoke</h3>
+                <p class="text-slate font-sans text-sm leading-relaxed">Sing your heart out and win fun prizes. Great for groups and confident singers!</p>
+            </div>
+
+            <!-- Wednesday -->
+            <div class="min-w-[85vw] md:min-w-[350px] snap-center ritual-card bg-white p-8 rounded-2xl shadow-sm border border-gray-100 hover:shadow-lg transition duration-300 group" data-day="Wednesday">
+                <div class="flex justify-between items-start mb-6">
+                    <span class="bg-emerald/10 text-emerald px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider">Wednesday</span>
+                    <i class="fas fa-drumstick-bite text-2xl text-copper opacity-50 group-hover:opacity-100 transition"></i>
+                </div>
+                <h3 class="font-serif text-2xl font-bold text-charcoal mb-2">Wine & Wings</h3>
+                <p class="text-slate font-sans text-sm leading-relaxed">The perfect mid-week break. 1kg Wings to share and discounted bottles of house wine.</p>
+            </div>
+
+            <!-- Thursday -->
+            <div class="min-w-[85vw] md:min-w-[350px] snap-center ritual-card bg-white p-8 rounded-2xl shadow-sm border border-gray-100 hover:shadow-lg transition duration-300 group" data-day="Thursday">
+                <div class="flex justify-between items-start mb-6">
+                    <span class="bg-emerald/10 text-emerald px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider">Thursday</span>
+                    <i class="fas fa-brain text-2xl text-copper opacity-50 group-hover:opacity-100 transition"></i>
+                </div>
+                <h3 class="font-serif text-2xl font-bold text-charcoal mb-2">Quiz Night</h3>
+                <p class="text-slate font-sans text-sm leading-relaxed">Gather the smart ones in the family. Test your knowledge while enjoying dinner.</p>
+            </div>
+
+            <!-- Friday -->
+            <div class="min-w-[85vw] md:min-w-[350px] snap-center ritual-card bg-white p-8 rounded-2xl shadow-sm border border-gray-100 hover:shadow-lg transition duration-300 group" data-day="Friday">
+                <div class="flex justify-between items-start mb-6">
+                    <span class="bg-emerald/10 text-emerald px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider">Friday</span>
+                    <i class="fas fa-glass-cheers text-2xl text-copper opacity-50 group-hover:opacity-100 transition"></i>
+                </div>
+                <h3 class="font-serif text-2xl font-bold text-charcoal mb-2">Garden Social</h3>
+                <p class="text-slate font-sans text-sm leading-relaxed">The lights go on and the music goes up. Casual dining and drinks until late.</p>
+            </div>
+
+            <!-- Saturday -->
+            <div class="min-w-[85vw] md:min-w-[350px] snap-center ritual-card bg-white p-8 rounded-2xl shadow-sm border border-gray-100 hover:shadow-lg transition duration-300 group" data-day="Saturday">
+                <div class="flex justify-between items-start mb-6">
+                    <span class="bg-emerald/10 text-emerald px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider">Saturday</span>
+                    <i class="fas fa-music text-2xl text-copper opacity-50 group-hover:opacity-100 transition"></i>
+                </div>
+                <h3 class="font-serif text-2xl font-bold text-charcoal mb-2">Live Grooves</h3>
+                <p class="text-slate font-sans text-sm leading-relaxed">Acoustic sets in the garden from 1pm. The perfect backdrop for a long lunch.</p>
+            </div>
+
+            <!-- Sunday -->
+            <div class="min-w-[85vw] md:min-w-[350px] snap-center ritual-card bg-white p-8 rounded-2xl shadow-sm border border-gray-100 hover:shadow-lg transition duration-300 group" data-day="Sunday">
+                <div class="flex justify-between items-start mb-6">
+                    <span class="bg-emerald/10 text-emerald px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider">Sunday</span>
+                    <i class="fas fa-sun text-2xl text-saffron opacity-50 group-hover:opacity-100 transition"></i>
+                </div>
+                <h3 class="font-serif text-2xl font-bold text-charcoal mb-2">Family Roast</h3>
+                <p class="text-slate font-sans text-sm leading-relaxed">Kids entertainment, face painting, and our famous Sunday Roast with all the trimmings.</p>
+            </div>
+            
+            <!-- Spacer -->
+            <div class="min-w-[20px]"></div>
+        </div>
+    </section>
+
+    <!-- MENU SECTION -->
+    <section id="menu" class="py-24 bg-white">
+        <div class="container mx-auto px-6 max-w-6xl">
+            <div class="text-center mb-12">
+                <h2 class="font-serif text-4xl text-charcoal mb-6">From The Kitchen</h2>
+                
+                <!-- Clean Text Navigation -->
+                <div class="flex flex-wrap justify-center gap-8 font-sans text-sm font-bold text-gray-400 border-b border-gray-100 pb-4">
+                    <button onclick="filterMenu('specials', event)" class="menu-tab text-emerald border-b-2 border-emerald pb-4 transition hover:text-emerald focus:outline-none">Weekly Specials</button>
+                    <button onclick="filterMenu('starters', event)" class="menu-tab hover:text-emerald pb-4 transition focus:outline-none">Starters</button>
+                    <button onclick="filterMenu('mains', event)" class="menu-tab hover:text-emerald pb-4 transition focus:outline-none">The Grill</button>
+                    <button onclick="filterMenu('burgers', event)" class="menu-tab hover:text-emerald pb-4 transition focus:outline-none">Burgers</button>
+                    <button onclick="filterMenu('drinks', event)" class="menu-tab hover:text-emerald pb-4 transition focus:outline-none">Drinks</button>
+                    <button onclick="filterMenu('bar_specials', event)" class="menu-tab text-copper hover:text-copper pb-4 transition focus:outline-none">Bar Specials</button>
+                </div>
+            </div>
+
+            <!-- DYNAMIC MENU CONTAINER -->
+            <div id="menu-container" class="grid grid-cols-1 md:grid-cols-2 gap-x-16 gap-y-10 min-h-[400px]">
+                <!-- Content injected via JS -->
+            </div>
+            
+            <div class="text-center mt-16">
+                 <a href="menu.pdf" class="inline-block border-2 border-emerald text-emerald px-8 py-3 rounded-full font-sans font-bold text-sm hover:bg-emerald hover:text-white transition duration-300">Download Full Menu (PDF)</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- WEEKLY SPECIALS SECTION (Bento Layout) -->
+    <section id="specials-section" class="py-20 bg-cream">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-12">
+                <h2 class="font-serif text-4xl text-charcoal mb-2">Weekly Highlights</h2>
+                <p class="text-emerald italic">Limited time offers you don't want to miss</p>
+            </div>
+
+            <!-- Asymmetrical Bento Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-[minmax(200px,auto)]">
+                
+                <!-- Large Highlight (Sharing) -->
+                <div class="md:col-span-2 lg:col-span-2 row-span-2 bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition duration-500 group relative min-h-[400px]">
+                    <img src="https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&q=80&w=800" class="absolute inset-0 w-full h-full object-cover transition duration-700 group-hover:scale-105" alt="Ribs">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex flex-col justify-end p-8">
+                        <div class="absolute top-6 left-6 bg-saffron text-emerald px-4 py-1 rounded-full text-xs font-bold uppercase shadow-sm">Crowd Favorite</div>
+                        <h3 class="font-serif text-3xl text-white mb-2">The Butcher's Block</h3>
+                        <p class="text-white/80 mb-4 font-sans text-sm max-w-md">A generous sharing platter featuring 400g sticky Pork Ribs, 200g sliced Sirloin, Buffalo Wings, and crispy onion rings.</p>
+                        <div class="flex items-center gap-4">
+                            <span class="text-2xl font-serif font-bold text-saffron">R295</span>
+                            <span class="text-white text-xs border border-white/30 px-3 py-1 rounded-full">Feeds 2-3</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Side Card 1 (Burger) -->
+                <div class="bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition duration-500 group relative h-[250px] md:h-auto">
+                    <img src="https://images.unsplash.com/photo-1594212699903-ec8a3eca50f5?q=80&w=800" class="absolute inset-0 w-full h-full object-cover transition duration-700 group-hover:scale-105" alt="Burger">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex flex-col justify-end p-6">
+                        <span class="text-saffron text-xs font-bold uppercase mb-1">Tuesday Only</span>
+                        <h3 class="font-serif text-xl text-white">Smash Deal</h3>
+                        <div class="flex justify-between items-end mt-2">
+                             <p class="text-white/70 text-xs">2x Burgers + Fries</p>
+                             <span class="font-bold text-white">R135</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Side Card 2 (Drink) -->
+                <div class="bg-emerald rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition duration-500 group relative p-8 flex flex-col justify-between h-[250px] md:h-auto">
+                     <div class="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -mr-10 -mt-10 blur-2xl"></div>
+                     <div>
+                        <span class="bg-white/20 text-white px-3 py-1 rounded-full text-xs font-bold uppercase">4pm - 6pm</span>
+                        <h3 class="font-serif text-2xl text-white mt-4">Golden Hour</h3>
+                        <p class="text-white/70 text-sm mt-2">Specials on all tap beers.</p>
+                     </div>
+                     <div class="flex items-center justify-between">
+                         <span class="text-3xl font-serif font-bold text-saffron">R35</span>
+                         <i class="fas fa-beer text-4xl text-white/20"></i>
+                     </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer id="contact" class="bg-charcoal text-white/80 py-16 w-full safe-area-pb">
+        <div class="container mx-auto px-6 grid md:grid-cols-3 gap-12 text-center md:text-left">
+            <!-- Brand -->
+            <div>
+                <h4 class="font-serif text-2xl text-white mb-6 flex justify-center md:justify-start items-center gap-2">
+                    <i class="fas fa-leaf text-saffron text-sm"></i> Urban Oasis
+                </h4>
+                <p class="text-sm leading-relaxed mb-6 text-gray-400">
+                    A destination for every mood. From our family to yours, welcome home.
+                </p>
+                <div class="flex justify-center md:justify-start gap-4 text-xl">
+                    <a href="#" class="hover:text-copper transition"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="hover:text-copper transition"><i class="fab fa-facebook-f"></i></a>
+                </div>
+            </div>
+            
+            <!-- Info -->
+            <div>
+                <h4 class="font-sans font-bold text-copper uppercase tracking-widest text-xs mb-6">Find Us</h4>
+                <p class="text-sm mb-2 text-gray-300">277 Church Street, JHB North</p>
+                <p class="text-sm mb-4"><a href="tel:+27115550199" class="hover:text-white">+27 11 555 0199</a></p>
+                <p class="text-sm"><a href="mailto:bookings@urbanoasis.co.za" class="hover:text-white">bookings@urbanoasis.co.za</a></p>
+            </div>
+
+            <!-- Hours -->
+            <div>
+                <h4 class="font-sans font-bold text-copper uppercase tracking-widest text-xs mb-6">Hours</h4>
+                <div class="text-sm space-y-2 text-gray-300">
+                    <div class="flex justify-between max-w-[200px] mx-auto md:mx-0"><span>Mon-Thu</span> <span>11:00 - 22:00</span></div>
+                    <div class="flex justify-between max-w-[200px] mx-auto md:mx-0 text-white font-bold"><span>Fri-Sat</span> <span>11:00 - 02:00</span></div>
+                    <div class="flex justify-between max-w-[200px] mx-auto md:mx-0"><span>Sun</span> <span>11:00 - 20:00</span></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Map -->
+        <div class="w-full h-64 mt-12 grayscale hover:grayscale-0 transition duration-500">
+             <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3584.664684523!2d27.9!3d-26.0!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjbCsDAwJzAwLjAiUyAyN8KwNTQnMDAuMCJF!5e0!3m2!1sen!2sza!4v1600000000000!5m2!1sen!2sza" 
+                    class="w-full h-full border-0" allowfullscreen="" loading="lazy"></iframe>
+        </div>
+
+        <div class="text-center mt-8 text-xs text-gray-500 border-t border-white/10 pt-8">
+            &copy; 2026 Urban Oasis. All Rights Reserved.
+        </div>
+    </footer>
+
+    <script>
+        // Data for Toggle
+        const content = {
+            day: {
+                headline: "Your Family's<br><span class='italic text-saffron'>Daily Escape.</span>",
+                subhead: "Soulful dining under the sun",
+            },
+            night: {
+                headline: "Jozi's Weekend<br><span class='italic text-copper'>Electric Pulse.</span>",
+                subhead: "Cocktails, Beats & Neon Lights",
+            }
+        };
+
+        let isNight = false;
+
+        function toggleVibe() {
+            isNight = !isNight;
+            const data = isNight ? content.night : content.day;
+            const pill = document.getElementById('toggle-pill');
+            const icon = document.getElementById('toggle-icon');
+            
+            // Toggle Pill Position & Icon
+            if(isNight) {
+                pill.style.transform = "translateX(100%)";
+                pill.classList.remove('bg-saffron');
+                pill.classList.add('bg-emerald');
+                icon.className = "fas fa-moon text-white text-lg";
+            } else {
+                pill.style.transform = "translateX(0)";
+                pill.classList.remove('bg-emerald');
+                pill.classList.add('bg-saffron');
+                icon.className = "fas fa-sun text-emerald text-lg";
+            }
+
+            // Fade Backgrounds
+            const dayLayer = document.getElementById('hero-day');
+            const nightLayer = document.getElementById('hero-night');
+            
+            if(isNight) {
+                dayLayer.style.opacity = '0';
+                nightLayer.style.opacity = '1';
+            } else {
+                dayLayer.style.opacity = '1';
+                nightLayer.style.opacity = '0';
+            }
+
+            // Update Text
+            const textContainer = document.getElementById('hero-text-container');
+            textContainer.style.opacity = '0';
+            
+            setTimeout(() => {
+                document.getElementById('hero-headline').innerHTML = data.headline;
+                document.getElementById('hero-subhead').innerText = data.subhead;
+                textContainer.style.opacity = '1';
+            }, 300);
+        }
+
+        function toggleMenu() {
+            const menu = document.getElementById('mobileMenu');
+            if (menu.classList.contains('translate-x-full')) {
+                menu.classList.remove('translate-x-full');
+            } else {
+                menu.classList.add('translate-x-full');
+            }
+        }
+
+        // Auto-switch based on time
+        window.addEventListener('DOMContentLoaded', () => {
+            const hour = new Date().getHours();
+            if (hour >= 18 || hour < 6) {
+                toggleVibe(); // Switch to night if after 6 PM
+            }
+        });
+
+        // Highlight Today's Ritual (Cards)
+        document.addEventListener('DOMContentLoaded', () => {
+            const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+            const today = days[new Date().getDay()];
+            
+            const ritualCards = document.querySelectorAll('.ritual-card');
+            
+            ritualCards.forEach(card => {
+                if(card.getAttribute('data-day') === today) {
+                    card.classList.add('active-day');
+                    let badge = card.querySelector('.today-badge');
+                    if(!badge) {
+                        badge = document.createElement('div');
+                        badge.className = 'absolute top-4 right-4 bg-emerald text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider shadow-sm z-10';
+                        badge.innerText = 'Today';
+                        card.appendChild(badge);
+                    }
+                    badge.style.display = 'block';
+                }
+            });
+            
+            // Load Specials by default in Menu section
+            filterMenu('specials', null);
+        });
+
+        // MENU DATA
+        const menuData = {
+            specials: [
+                { name: "Tuesday Smash Deal", desc: "Two Urban Legend burgers + Rustic Chips + Onion Rings.", price: "R135" },
+                { name: "Wing-man Wednesday", desc: "1KG Buffalo Wings (BBQ or Peri-Peri) + 2 Coronas.", price: "R165" },
+                { name: "Sunday Roast Platter", desc: "Roast Beef, Yorkshire pudding, roast potatoes, seasonal veg & gravy.", price: "R185" },
+                { name: "Date Night Duo", desc: "2x 200g Sirloin Steaks + Bottle of House Wine.", price: "R380" },
+                { name: "Family Pizza Feast", desc: "3x Large Pizzas (Margherita, Pepperoni, Hawaiian) + 2L Soda.", price: "R320" }
+            ],
+            bar_specials: [
+                { name: "Happy Hour Draughts", desc: "Available Tue-Fri (4pm - 6pm). Local craft beer.", price: "R35" },
+                { name: "Bucket of Coronas", desc: "6 Ice Cold Coronas in a bucket of ice.", price: "R190" },
+                { name: "Gin O'Clock", desc: "Double Gin & Tonic special (Sat 1pm - 4pm).", price: "R60" },
+                { name: "Wine Wednesday", desc: "20% Off all bottles of wine (Wednesdays Only).", price: "-20%" }
+            ],
+            starters: [
+                { name: "Jalapeno Poppers", desc: "Cream cheese filled, bacon wrapped, panko crumbed.", price: "R85" },
+                { name: "Crispy Calamari", desc: "Salt & pepper dust, house lemon aioli.", price: "R95" },
+                { name: "Chicken Livers", desc: "Spicy peri-peri cream sauce, toasted ciabatta.", price: "R80" },
+                { name: "Carpaccio", desc: "Venison, parmesan shavings, rocket, truffle oil.", price: "R110" },
+                { name: "Halloumi Fingers", desc: "Grilled or fried, sweet chili dipping sauce.", price: "R75" },
+                { name: "Wings (Starter)", desc: "4 Wings, BBQ or Peri-Peri.", price: "R70" }
+            ],
+            mains: [
+                { name: "200g Fillet", desc: "Aged 28 days, basted or pepper crusted.", price: "R185" },
+                { name: "300g Ribeye", desc: "Marbled and flavorful. Chef's pick.", price: "R210" },
+                { name: "Lamb Chops", desc: "400g loin chops, lemon & rosemary butter.", price: "R240" },
+                { name: "Pork Ribs (600g)", desc: "Sticky, sweet, smoky house basting.", price: "R230" },
+                { name: "Flame Grilled Chicken", desc: "Half chicken, lemon herb or peri-peri.", price: "R160" }
+            ],
+            burgers: [
+                { name: "The Urban Legend", desc: "Double patty, bacon jam, mature cheddar.", price: "R145" },
+                { name: "Truffle Mushroom", desc: "Swiss cheese, wild mushroom sauce, truffle oil.", price: "R135" },
+                { name: "The Spicy One", desc: "Jalapenos, chilli relish, sriracha mayo.", price: "R125" },
+                { name: "Classic Cheese", desc: "Aged cheddar, pickles, house sauce.", price: "R110" },
+                { name: "Chicken Crunch", desc: "Buttermilk fried breast, slaw, ranch dressing.", price: "R115" }
+            ],
+            drinks: [
+                { name: "Garden Gin Spritz", desc: "Inverroche Amber, Elderflower, Cucumber.", price: "R95" },
+                { name: "Oasis Mojito", desc: "Rum, Lime, Mint, Soda, secrets.", price: "R85" },
+                { name: "Castle Lite Draught", desc: "500ml Ice Cold.", price: "R48" },
+                { name: "Stella Artois", desc: "500ml Draught.", price: "R55" },
+                { name: "Sauvignon Blanc", desc: "Sophie Te'blanche (Glass).", price: "R70" },
+                { name: "Merlot", desc: "Durbanville Hills (Glass).", price: "R65" }
+            ]
+        };
+
+        function filterMenu(category, event) {
+            // SCROLL LOGIC for 'specials' category
+            if (category === 'specials') {
+                const specialsSection = document.getElementById('specials-section');
+                if (specialsSection) {
+                    const y = specialsSection.getBoundingClientRect().top + window.scrollY - 100;
+                    window.scrollTo({top: y, behavior: 'smooth'});
+                }
+            }
+
+            const container = document.getElementById('menu-container');
+            const items = menuData[category];
+            
+            // Update Tab Styles
+            document.querySelectorAll('.menu-tab').forEach(btn => {
+                btn.classList.remove('text-emerald', 'border-b-2', 'border-emerald');
+                btn.classList.add('text-gray-400');
+                if(btn.textContent.includes('Specials') || btn.textContent.includes('Bar')) {
+                     // Keep them slightly visible if desired or just uniform
+                }
+            });
+
+            // Set active styles
+            let target = null;
+            if (event && event.target) {
+                target = event.target.closest('button');
+            } else if (!event) {
+                // Default fallback
+                if (category === 'specials') target = document.querySelector('button[onclick*="specials"]');
+            }
+
+            if (target) {
+                target.classList.remove('text-gray-400');
+                target.classList.add('text-emerald', 'border-b-2', 'border-emerald');
+            }
+
+            // Render with Fade
+            container.style.opacity = '0';
+            setTimeout(() => {
+                let html = '';
+                items.forEach(item => {
+                    html += `
+                        <div class="flex justify-between items-baseline mb-4 group">
+                            <div class="flex-grow">
+                                <div class="flex justify-between items-baseline">
+                                    <h4 class="font-serif font-bold text-lg text-charcoal group-hover:text-emerald transition">${item.name}</h4>
+                                    <div class="border-b-2 border-dotted border-emerald/20 flex-grow mx-4 relative -top-1"></div>
+                                    <span class="font-sans font-bold text-emerald text-lg">${item.price}</span>
+                                </div>
+                                <p class="font-sans text-sm text-gray-500 italic mt-1">${item.desc}</p>
+                            </div>
+                        </div>
+                    `;
+                });
+                container.innerHTML = html;
+                container.style.opacity = '1';
+            }, 200);
+        }
+    </script>
+</body>
+</html>
